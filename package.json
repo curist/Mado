@@ -1,0 +1,31 @@
+{
+  "name": "mado",
+  "version": "0.1.0",
+  "description": "a not really useful, dumb model generator",
+  "main": "mado.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/curist/Mado.git"
+  },
+  "keywords": [
+    "mado",
+    "model"
+  ],
+  "author": "curist",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/curist/Mado/issues"
+  },
+  "homepage": "https://github.com/curist/Mado",
+  "dependencies": {
+    "bluebird": "^1.2.4",
+    "envify": "^1.2.1",
+    "react": "^0.10.0",
+    "react-async": "^0.9.2",
+    "superagent": "^0.18.0",
+    "underscore": "^1.6.0"
+  }
+}
