@@ -20,8 +20,11 @@ var Mado = (function (){
   var cached_value = null;
   var injector = null;
 
-  var NewMado = function(name, obj){
+  var NewMado = function(name, obj) {
     var context = this;
+
+    context.request = request;
+
     // 參數檢查
     if(typeof name != 'string' ||
        typeof obj != 'object' ||
@@ -48,10 +51,22 @@ var Mado = (function (){
       RegisteredModelNames[name] = true;
     }
 
+    // extend with EventEmitter
+    var EventEmitter = require('events').EventEmitter;
+    _.extend(context, new EventEmitter());
+    context.off = context.removeListener;
+
     context.mado = model_name = name;
     api_url = obj.url;
     parse = obj.parse || parse;
     indexer = obj.key || indexer;
+
+    delete obj.parse;
+    delete obj.key;
+    delete obj.url;
+
+    // extend all other properies
+    _.extend(context, obj);
 
     context.Injector =  React.createClass({
       render: function() {
@@ -66,9 +81,9 @@ var Mado = (function (){
       cached_value = window.__preloadedModelValues[model_name];
     }
 
-    context.getter = function getter(){
+    context.getter = function getter(force_update){
       var deferred = Promise.defer();
-      if(cached_value && !isServer) {
+      if(!force_update && cached_value && !isServer) {
         // TODO 加cache expiration
         deferred.resolve(cached_value);
 
@@ -87,12 +102,12 @@ var Mado = (function (){
                 });
               }
               deferred.resolve(cached_value);
+              context.emit('sync');
             }
           });
       }
       return deferred.promise;
     };
-
   };
 
   return NewMado;
