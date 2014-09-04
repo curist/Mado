@@ -53,7 +53,7 @@ var Mado = (function (){
 
     // extend with EventEmitter
     var EventEmitter = require('events').EventEmitter;
-    _.extend(context, new EventEmitter());
+    _.extend(context, EventEmitter.prototype);
     context.off = context.removeListener;
 
     context.mado = model_name = name;
@@ -88,7 +88,7 @@ var Mado = (function (){
         deferred.resolve(cached_value);
 
       } else {
-        request.get(api_url)
+        context.request.get(api_url)
           .end(function(err, res) {
             if(err) {
               deferred.reject(err);
